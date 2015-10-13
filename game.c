@@ -167,16 +167,17 @@ int main (void)
 
 
 		
-		/*
+		
 		if (sent == 1 && received == 0){
 			ir_uart_putc(my_symbol);
 			if(ir_uart_read_ready_p()){
 				their_symbol = ir_uart_getc();
+				received = 1;
 			}
 		}
-		*/
-		//use while loop to keep search any signal that sent from opponent
 		
+		//use while loop to keep search any signal that sent from opponent
+		/*
 		if (sent == 1 && received == 0){
 			while(1){
 				ir_uart_putc(my_symbol);
@@ -193,7 +194,7 @@ int main (void)
 					break;
 				}
 			}
-		}
+		}*/
 		
 		if (sent == 1 && received == 1){
 			if(result(my_symbol, their_symbol) == WIN) {
