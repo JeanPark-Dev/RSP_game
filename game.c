@@ -12,7 +12,7 @@
 #define MESSAGE_RATE 10
 
 
-void display_character (char character)
+void display_character (symbol_t character)
 {
     char buffer[2];
 
@@ -101,7 +101,8 @@ int main (void)
 	char ready = 0;
 	char text_set = 0;
 
-	symbol_t current_state;
+	int current_state = 0;
+	symbol_t received_symbol;
 	symbol_t my_symbol = ROCK;
 	symbol_t their_symbol;
 
@@ -132,17 +133,63 @@ int main (void)
 		tinygl_update ();
 		navswitch_update ();
 		
-		
 
+		if (ready == 0){
+			my_symbol = cSelection(my_symbol);
+			display_character(my_symbol);
+
+			if(navswitch_push_event_p(NAVSWITCH_PUSH)){
+				tinygl_clear();
+				ready = 1;
+			}
+		} else {
+			ir_uart_putc(my_symbol);
+			sent = 1;
+		}
+
+		if (received == 0){
+			if(ir_uart_read_ready_p()){
+				received_symbol = ir_uart_getc;
+				if (received_symbol == PAPER ||
+					received_symbol == ROCK ||
+					received_symbol == SCISSORS){
+					their_symbol = ir_uart_getc;
+					received = 1;
+				} 
+			}
+		}
 		
+		//use while loop to keep search any signal that sent from opponent
+		if (sent == 1 && received == 0){
+			tinygl_text("wait")	;
+			while(1){
+				if(ir_uart_read_ready_p()){
+					received_symbol = ir_uart_getc;
+					if (received_symbol == PAPER ||
+						received_symbol == ROCK ||
+						received_symbol == SCISSORS){
+						their_symbol = ir_uart_getc;
+						received = 1;
+						
+					} 
+					break;
+				}
+			}
+		}
+
+
+
+
+
+
 		if (current_state != 1) {
 			display_character (character);
 		}
 		if(navswitch_push_event_p (NAVSWITCH_PUSH)){
-			ir_uart_putc(status) ;
+			ir_uart_putc(my_symbol);
 		
 		if (ir_uart_read_ready_p() == false){
-			tinygl_text("v");
+			;
 		}  
 		if(ir_uart_read_ready_p() == true){
     			uint8_t received;
@@ -157,7 +204,10 @@ int main (void)
 				tinygl_text("L");
 			}
 		}
-	}				
+	}	
+
+
+
 /*
 		if (ir_uart_read_ready_p() == true ){
 			received = ir_uart_getc();
