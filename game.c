@@ -1,3 +1,5 @@
+/*author Jinyoung Park*/
+
 #include "system.h"
 #include "pacer.h"
 #include "navswitch.h"
@@ -19,39 +21,98 @@ void display_character (char character)
     tinygl_text (buffer);
 }
 
+typedef enum {
+	PAPER = 'P',
+	SCISSORS = 'S',
+	ROCK = 'R'
+} symbol_t;
 
-uint8_t result(uint8_t mine, uint8_t theirs) {
+typedef enum {
+	WIN,
+	LOSE,
+	DRAW
+} result_t;
+
+char character;
+
+result_t result(symbol_t mine, symbol_t theirs) {
 	if (mine == theirs) {
-		return 2;
+		return DRAW;
 	}
-	if (mine == 0 && theirs == 1) {
-		return 0;
+	if (mine == PAPER && theirs == ROCK) {
+		return WIN;
 	} else {
-		return 1;
-	}
-	
-	if (mine == 1 && theirs == 2) {
-		return 0;
-	} else {
-		return 1;
+		return LOSE;
 	}
 	
-	if (mine == 2 && theirs == 0) {
-		return 0;
+	if (mine == ROCK && theirs == SCISSORS) {
+		return WIN;
 	} else {
-		return 1;
+		return LOSE;
+	}
+	
+	if (mine == SCISSORS && theirs == PAPER) {
+		return WIN;
+	} else {
+		return LOSE;
 	}
 }
 
+symbol_t cSelection(symbol_t my_symbol){
+	int status;
+
+	if (my_symbol == ROCK){
+		status = 0;
+	} else if ( my_symbol == PAPER){
+		status = 1;
+	} else {
+		status = 2;
+	}
+
+	if (navswitch_push_event_p (NAVSWITCH_WEST))
+			status += 1;
+
+		if (navswitch_push_event_p (NAVSWITCH_EAST)) {
+			if (status == 0) {
+				status = 2;
+			} else {
+				status -= 1;
+			}
+		}
+
+	status = status % 3;
+		if (status == 0) {
+			my_symbol = ROCK;
+		}
+		if (status == 1) {
+			my_symbol = PAPER;
+		}
+		if (status == 2) {
+			my_symbol = SCISSORS;
+		}
+	return my_symbol;
+}
+
+
 int main (void)
 {
+	char sent = 0;
+	char received = 0;
+	char ready = 0;
+	char text_set = 0;
+
+	symbol_t current_state;
+	symbol_t my_symbol = ROCK;
+	symbol_t their_symbol;
+
+
+	/* Initialize everything*/
 	system_init ();
-    char character;
+    //char character;
     uint8_t status = 0;
 
     int final_result = 0;
-    
-    int current_state = 0;
+    //int current_state = 0;
 
     tinygl_init (PACER_RATE);
     tinygl_font_set (&font5x7_1);
@@ -67,38 +128,23 @@ int main (void)
 
     while(1)
     {
-		pacer_wait ();
+		//pacer_wait ();
 		tinygl_update ();
 		navswitch_update ();
-		if (navswitch_push_event_p (NAVSWITCH_WEST))
-			status += 1;
+		
+		
 
-		if (navswitch_push_event_p (NAVSWITCH_EAST)) {
-			if (status == 0) {
-				status = 2;
-			} else {
-				status -= 1;
-			}
-		}
-		status = status % 3;
-		if (status == 0) {
-			character = 'R';
-		}
-		if (status == 1) {
-			character = 'P';
-		}
-		if (status == 2) {
-			character = 'S';
-		}
+		
 		if (current_state != 1) {
 			display_character (character);
 		}
 		if(navswitch_push_event_p (NAVSWITCH_PUSH)){
 			ir_uart_putc(status) ;
-		while(1){
+		
 		if (ir_uart_read_ready_p() == false){
 			tinygl_text("v");
-		} else if(ir_uart_read_ready_p() == true){
+		}  
+		if(ir_uart_read_ready_p() == true){
     			uint8_t received;
 			received = ir_uart_getc();
 			current_state = 1;
@@ -110,15 +156,8 @@ int main (void)
 			} else if (final_result == 0) {
 				tinygl_text("L");
 			}
-			
-			}
 		}
-	}
-		
-
-
-
-			
+	}				
 /*
 		if (ir_uart_read_ready_p() == true ){
 			received = ir_uart_getc();
@@ -133,7 +172,6 @@ int main (void)
 			}
 		}
 */
-		
 	}
     return 0;
 }
