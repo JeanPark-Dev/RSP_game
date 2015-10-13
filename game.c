@@ -11,16 +11,6 @@
 #define PACER_RATE 500
 #define MESSAGE_RATE 10
 
-
-void display_character (symbol_t character)
-{
-    char buffer[2];
-
-    buffer[0] = character;
-    buffer[1] = '\0';
-    tinygl_text (buffer);
-}
-
 typedef enum {
 	PAPER = 'P',
 	SCISSORS = 'S',
@@ -33,18 +23,30 @@ typedef enum {
 	DRAW
 } result_t;
 
+
+void display_character (symbol_t character)
+{
+    char buffer[2];
+
+    buffer[0] = character;
+    buffer[1] = '\0';
+    tinygl_text (buffer);
+}
+
+
 char character;
 
 result_t result(symbol_t mine, symbol_t theirs) {
 	if (mine == theirs) {
 		return DRAW;
-	}
-	if (mine == PAPER && theirs == ROCK) {
+	} else if ((mine == PAPER && theirs == ROCK) ||
+			   (mine == ROCK && theirs == SCISSORS)||
+			   (mine == SCISSORS && theirs == PAPER)) {
 		return WIN;
 	} else {
 		return LOSE;
 	}
-	
+	/*
 	if (mine == ROCK && theirs == SCISSORS) {
 		return WIN;
 	} else {
@@ -55,7 +57,7 @@ result_t result(symbol_t mine, symbol_t theirs) {
 		return WIN;
 	} else {
 		return LOSE;
-	}
+	}*/
 }
 
 symbol_t cSelection(symbol_t my_symbol){
@@ -101,18 +103,17 @@ int main (void)
 	char ready = 0;
 	char text_set = 0;
 
-	int current_state = 0;
+	//int current_state = 0;
 	symbol_t received_symbol;
 	symbol_t my_symbol = ROCK;
-	symbol_t their_symbol;
+	symbol_t their_symbol = ROCK;
 
 
 	/* Initialize everything*/
 	system_init ();
     //char character;
-    uint8_t status = 0;
-
-    int final_result = 0;
+    //int status = 0;
+    //int final_result = 0;
     //int current_state = 0;
 
     tinygl_init (PACER_RATE);
@@ -149,39 +150,77 @@ int main (void)
 
 		if (received == 0){
 			if(ir_uart_read_ready_p()){
-				received_symbol = ir_uart_getc;
+				received_symbol = ir_uart_getc();
 				if (received_symbol == PAPER ||
 					received_symbol == ROCK ||
 					received_symbol == SCISSORS){
-					their_symbol = ir_uart_getc;
+					their_symbol = ir_uart_getc();
 					received = 1;
 				} 
 			}
 		}
 		
-		//use while loop to keep search any signal that sent from opponent
+
+
+		
+		/*
 		if (sent == 1 && received == 0){
-			tinygl_text("wait")	;
+			ir_uart_putc(my_symbol);
+			if(ir_uart_read_ready_p()){
+				their_symbol = ir_uart_getc();
+			}
+		}
+		*/
+		//use while loop to keep search any signal that sent from opponent
+		
+		if (sent == 1 && received == 0){
 			while(1){
+				ir_uart_putc(my_symbol);
 				if(ir_uart_read_ready_p()){
-					received_symbol = ir_uart_getc;
+					received_symbol = ir_uart_getc();
+					
 					if (received_symbol == PAPER ||
 						received_symbol == ROCK ||
 						received_symbol == SCISSORS){
-						their_symbol = ir_uart_getc;
+						their_symbol = received_symbol;
 						received = 1;
-						
+						//break;
 					} 
 					break;
 				}
 			}
 		}
+		
+		if (sent == 1 && received == 1){
+			if(result(my_symbol, their_symbol) == WIN) {
+				if(text_set == 0){
+					tinygl_text("WINNER");
+					text_set = 1;
+				}
+			} else if (result(my_symbol, their_symbol) == LOSE) {
+				if(text_set == 0){
+					tinygl_text("LOSSER");
+					text_set = 1;
+				}
+			} else if (result(my_symbol, their_symbol) == DRAW) {
+				if(text_set == 0){
+					tinygl_text("DRAW");
+					text_set = 1;
+				}
+			}
+
+			if (navswitch_push_event_p(NAVSWITCH_PUSH)){
+				sent = 0;
+				received = 0;
+				ready = 0;
+				text_set = 0;
+				my_symbol = PAPER;
+			}
+		}
+		tinygl_update();
 
 
-
-
-
-
+		/*
 		if (current_state != 1) {
 			display_character (character);
 		}
@@ -208,7 +247,7 @@ int main (void)
 
 
 
-/*
+
 		if (ir_uart_read_ready_p() == true ){
 			received = ir_uart_getc();
 			current_state = 1;
