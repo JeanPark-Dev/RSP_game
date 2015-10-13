@@ -1,4 +1,8 @@
-/*author Jinyoung Park*/
+/*ENCE260 Assignment Part II
+  Written by Jinyoung Park 15648768
+  Rock_Scissor_Paper */
+  
+
 
 #include "system.h"
 #include "pacer.h"
