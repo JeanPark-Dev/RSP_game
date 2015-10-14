@@ -228,7 +228,3 @@ int main (void)
     return 0;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 29aa5066f321da16ba56ba1f90661c035eb12860
