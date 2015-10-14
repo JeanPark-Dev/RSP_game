@@ -19,6 +19,7 @@ typedef enum {
 	PAPER = 'P',
 	SCISSORS = 'S',
 	ROCK = 'R'
+	//WAIT = 'w'
 } symbol_t;
 
 typedef enum {
@@ -190,38 +191,11 @@ int main (void)
 			}
 		}
 		
+		// if(sent && !received){
+		// 	//display_character(WAIT);
+		// 	tinygl_text("w");
+		// }
 
-
-		
-		/*
-		if (sent && !received){
-			ir_uart_putc(my_symbol);
-			if(ir_uart_read_ready_p()){
-				their_symbol = ir_uart_getc();
-				received = 1;
-			}
-		}*/
-		
-		//use while loop to keep search any signal that sent from opponent
-		/*
-		if (sent == 1 && received == 0){
-			while(1){
-				ir_uart_putc(my_symbol);
-				if(ir_uart_read_ready_p()){
-					received_symbol = ir_uart_getc();
-					
-					if (received_symbol == PAPER ||
-						received_symbol == ROCK ||
-						received_symbol == SCISSORS){
-						their_symbol = received_symbol;
-						received = 1;
-						//break;
-					} 
-					break;
-				}
-			}
-		}*/
-		
 		if (sent == 1 && received == 1){
 			if(result(my_symbol, their_symbol) == WIN) {
 				if(text_set == 0){
