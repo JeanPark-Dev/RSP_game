@@ -24,7 +24,8 @@
 #define MESSAGE_RATE 10 //speed of message flowing
 
 //main function
-int main(void) {
+int main(void)
+{
 	//initialisation
 	system_init ();
 
@@ -46,7 +47,7 @@ int main(void) {
 	int text_set = 0;
 
 	//current symbols(status)
-	//sym = symbol
+						//sym = symbol
 	symbol_t symReceived;
 	symbol_t mySym = ROCK;
 	symbol_t thSym;
@@ -62,10 +63,10 @@ int main(void) {
 			mySym = cSelection(mySym);
 			cDisplay(mySym);
 
-			if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+			if (navswitch_push_event_p(NAVSWITCH_PUSH))
+			{
 				tinygl_clear();
 				ready = 1;
-
 			}
 		} else if (ready) {
 			ir_uart_putc(mySym);

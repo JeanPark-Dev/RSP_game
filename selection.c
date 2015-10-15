@@ -1,7 +1,7 @@
 /*ENCE260 Assignment Part II
   Written by Jinyoung Park 15648768
   Rock_Scissor_Paper
-  ---------------------------------- 
+  ----------------------------------
   File: selection.c
 */
 
@@ -14,10 +14,12 @@
 
 
 //change the current symbol status of player and select
-symbol_t cSelection(symbol_t my_symbol){
+symbol_t cSelection(symbol_t my_symbol)
+{
 	int status = 0;
 
-	if (my_symbol == ROCK){
+	if (my_symbol == ROCK)
+	{
 		status = 0;
 	} else if (my_symbol == PAPER)
 	{
@@ -31,7 +33,7 @@ symbol_t cSelection(symbol_t my_symbol){
 	if (navswitch_push_event_p (NAVSWITCH_WEST))
 			status += 1;
 
-	if (navswitch_push_event_p (NAVSWITCH_EAST)) 
+	if (navswitch_push_event_p (NAVSWITCH_EAST))
 	{
 		if (status == 0)
 		{
@@ -42,15 +44,15 @@ symbol_t cSelection(symbol_t my_symbol){
 	}
 
 	status = status % 3;
-	if (status == 0) 
+	if (status == 0)
 	{
 		my_symbol = ROCK;
 	}
-	if (status == 1) 
+	if (status == 1)
 	{
 		my_symbol = PAPER;
 	}
-	if (status == 2) 
+	if (status == 2)
 	{
 		my_symbol = SCISSORS;
 	}

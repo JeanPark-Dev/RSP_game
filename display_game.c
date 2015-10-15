@@ -3,6 +3,7 @@
   Rock_Scissor_Paper
   ----------------------------------
   File: display_game.c
+  character displayer
 */
 
 #include "system.h"
