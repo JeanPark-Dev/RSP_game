@@ -15,7 +15,7 @@
 #include "symbols.h"
 
 //display the given character
-void cDisplay (symbol_t character)
+void cDisplay (symbolType character)
 {
     char buffer[2];
 
