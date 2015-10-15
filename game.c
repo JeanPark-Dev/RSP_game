@@ -57,7 +57,7 @@ int main(void)
 		tinygl_update ();
 		navswitch_update ();
 
-		if (!ready)
+		if (ready == 0)
 		{
 			pacer_wait();
 			mySym = cSelection(mySym);
@@ -68,7 +68,7 @@ int main(void)
 				tinygl_clear();
 				ready = 1;
 			}
-		} else if (ready) {
+		} else if (ready == 1) {
 			ir_uart_putc(mySym);
 			sent = 1;
 		}
@@ -91,7 +91,7 @@ int main(void)
 		}
 
 		//display 'w' while wating
-		if(sent && !received)
+		if(sent == 1 && received == 0)
 		{
 			tinygl_text("w");
 		}
@@ -99,25 +99,25 @@ int main(void)
 		if (sent == 1 && received == 1)
 		{
 			//display the final status
-			if(result(mySym, thSym) == WIN)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("WINNER");
-					text_set = 1;
-				}
-			} else if (result(mySym, thSym) == LOSE)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("LOSSER");
-					text_set = 1;
-				}
-			} else if (result(mySym, thSym) == DRAW)
+			if (result(mySym, thSym) == DRAW)
 			{
 				if(text_set == 0)
 				{
 					tinygl_text("DRAW");
+					text_set = 1;
+				}
+			}  else if (result(mySym, thSym) == LOSE)
+			{
+				if(text_set == 0)
+				{
+					tinygl_text("LOSER");
+					text_set = 1;
+				}
+			} else if(result(mySym, thSym) == WIN)
+			{
+				if(text_set == 0)
+				{
+					tinygl_text("WINNER");
 					text_set = 1;
 				}
 			}
