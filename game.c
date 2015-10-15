@@ -98,22 +98,23 @@ int main(void)
 
 		if (sent == 1 && received == 1)
 		{
+			resultType outcome = result(mySym, thSym);
 			//display the final status
-			if (result(mySym, thSym) == DRAW)
+			if (outcome == DRAW)
 			{
 				if(text_set == 0)
 				{
 					tinygl_text("DRAW");
 					text_set = 1;
 				}
-			}  else if (result(mySym, thSym) == LOSE)
+			}  else if (outcome == LOSE)
 			{
 				if(text_set == 0)
 				{
 					tinygl_text("LOSER");
 					text_set = 1;
 				}
-			} else if(result(mySym, thSym) == WIN)
+			} else if(outcome == WIN)
 			{
 				if(text_set == 0)
 				{
