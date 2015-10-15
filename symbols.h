@@ -13,6 +13,6 @@ typedef enum
 	PAPER = 'P',
 	SCISSORS = 'S',
 	ROCK = 'R'
-} symbol_t;
+} symbolType;
 
 #endif
