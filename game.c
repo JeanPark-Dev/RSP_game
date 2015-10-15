@@ -46,9 +46,10 @@ int main(void) {
 	int text_set = 0;
 
 	//current symbols(status)
-	symbol_t received_symbol;
-	symbol_t my_symbol = ROCK;
-	symbol_t their_symbol;
+	//sym = symbol
+	symbol_t symReceived;
+	symbol_t mySym = ROCK;
+	symbol_t thSym;
 
     while(1)
     {
@@ -58,8 +59,8 @@ int main(void) {
 		if (!ready)
 		{
 			pacer_wait();
-			my_symbol = cSelection(my_symbol);
-			cDisplay(my_symbol);
+			mySym = cSelection(mySym);
+			cDisplay(mySym);
 
 			if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
 				tinygl_clear();
@@ -67,7 +68,7 @@ int main(void) {
 
 			}
 		} else if (ready) {
-			ir_uart_putc(my_symbol);
+			ir_uart_putc(mySym);
 			sent = 1;
 		}
 
@@ -75,14 +76,14 @@ int main(void) {
 		{
 			if(ir_uart_read_ready_p())
 			{
-				received_symbol = ir_uart_getc();
+				symReceived = ir_uart_getc();
 
 				//check whether the received symbol is one of three symbols
-				if (received_symbol == PAPER ||
-					received_symbol == ROCK  ||
-					received_symbol == SCISSORS)
+				if (symReceived == PAPER ||
+					symReceived == ROCK  ||
+					symReceived == SCISSORS)
 				{
-					their_symbol = received_symbol;
+					thSym = symReceived;
 					received = 1;
 				}
 			}
@@ -97,21 +98,21 @@ int main(void) {
 		if (sent == 1 && received == 1)
 		{
 			//display the final status
-			if(result(my_symbol, their_symbol) == WIN)
+			if(result(mySym, thSym) == WIN)
 			{
 				if(text_set == 0)
 				{
 					tinygl_text("WINNER");
 					text_set = 1;
 				}
-			} else if (result(my_symbol, their_symbol) == LOSE)
+			} else if (result(mySym, thSym) == LOSE)
 			{
 				if(text_set == 0)
 				{
 					tinygl_text("LOSSER");
 					text_set = 1;
 				}
-			} else if (result(my_symbol, their_symbol) == DRAW)
+			} else if (result(mySym, thSym) == DRAW)
 			{
 				if(text_set == 0)
 				{
@@ -127,7 +128,7 @@ int main(void) {
 				received = 0;
 				ready = 0;
 				text_set = 0;
-				my_symbol = ROCK;
+				mySym = ROCK;
 			}
 		}
 		tinygl_update();
