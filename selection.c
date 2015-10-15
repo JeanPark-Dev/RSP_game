@@ -14,17 +14,17 @@
 
 
 //change the current symbol status of player and select
-symbol_t cSelection(symbol_t my_symbol)
+symbolType cSelection(symbolType mySym)
 {
 	int status = 0;
 
-	if (my_symbol == ROCK)
+	if (mySym == ROCK)
 	{
 		status = 0;
-	} else if (my_symbol == PAPER)
+	} else if (mySym == PAPER)
 	{
 		status = 1;
-	} else if(my_symbol == SCISSORS)
+	} else if(mySym == SCISSORS)
 	{
 		status = 2;
 	}
@@ -46,15 +46,15 @@ symbol_t cSelection(symbol_t my_symbol)
 	status = status % 3;
 	if (status == 0)
 	{
-		my_symbol = ROCK;
+		mySym = ROCK;
 	}
 	if (status == 1)
 	{
-		my_symbol = PAPER;
+		mySym = PAPER;
 	}
 	if (status == 2)
 	{
-		my_symbol = SCISSORS;
+		mySym = SCISSORS;
 	}
-	return my_symbol;
+	return mySym;
 }
