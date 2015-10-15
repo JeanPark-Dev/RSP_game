@@ -14,7 +14,7 @@
 #include "tinygl.h"
 
 //returns final result WIN, LOSE, DRAW
-result_t result(symbol_t mine, symbol_t theirs)
+resultType result(symbolType mine, symbolType theirs)
 {
 	if (mine == theirs)
 	{
