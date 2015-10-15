@@ -1,7 +1,7 @@
 /*ENCE260 Assignment Part II
   Written by Jinyoung Park 15648768
   Rock_Scissor_Paper
-  ---------------------------------- 
+  ----------------------------------
   File: selection.h
 */
 
@@ -10,6 +10,6 @@
 
 #include "symbols.h"
 
-symbol_t cSelection(symbol_t my_symbol);
+symbolType cSelection(symbolType mySym);
 
 #endif
