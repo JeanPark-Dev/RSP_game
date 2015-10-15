@@ -48,9 +48,9 @@ int main(void)
 
 	//current symbols(status)
 						//sym = symbol
-	symbol_t symReceived;
-	symbol_t mySym = ROCK;
-	symbol_t thSym;
+	symbolType symReceived;
+	symbolType mySym = ROCK;
+	symbolType thSym;
 
     while(1)
     {
