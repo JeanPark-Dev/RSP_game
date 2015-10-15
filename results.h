@@ -14,6 +14,6 @@ typedef enum
 	WIN,
 	LOSE,
 	DRAW
-} result_t;
+} resultType;
 
 #endif
