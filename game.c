@@ -1,6 +1,10 @@
 /*ENCE260 Assignment Part II
   Written by Jinyoung Park 15648768
-  Rock_Scissor_Paper */
+  Rock_Scissor_Paper
+  ---------------------------------- 
+  File: game.c
+  Main function
+*/
   
 
 
@@ -11,129 +15,123 @@
 #include "../fonts/font5x7_1.h"
 #include "ir_uart.h"
 
+#include "symbols.h"
+#include "results.h"
+#include "display_game.h"
+#include "selection.h"
+#include "get_result.h"
 
 #define PACER_RATE 500
 #define MESSAGE_RATE 10
 
-typedef enum {
-	PAPER = 'P',
-	SCISSORS = 'S',
-	ROCK = 'R'
-	//WAIT = 'w'
-} symbol_t;
+// typedef enum {
+// 	PAPER = 'P',
+// 	SCISSORS = 'S',
+// 	ROCK = 'R'
+// } symbol_t;
 
-typedef enum {
-	WIN,
-	LOSE,
-	DRAW
-} result_t;
-
-
-
-uint8_t sent = 0;
-uint8_t received = 0;
-uint8_t ready = 0;
-uint8_t text_set = 0;
-
-symbol_t received_symbol;
-symbol_t my_symbol = ROCK;
-symbol_t their_symbol = ROCK;
+// typedef enum {
+// 	WIN,
+// 	LOSE,
+// 	DRAW
+// } result_t;
 
 
 
 
 
 
-void display_character (symbol_t character)
-{
-    char buffer[2];
+// void display_character (symbol_t character)
+// {
+//     char buffer[2];
 
-    buffer[0] = character;
-    buffer[1] = '\0';
-    tinygl_text (buffer);
-}
-
-
-char character;
-
-result_t result(symbol_t mine, symbol_t theirs) {
-	if (mine == theirs) {
-		return DRAW;
-	} else {
-		if (mine == PAPER) {
-			if(theirs == SCISSORS){
-				return LOSE;
-			} 
-			if (theirs == ROCK){
-				return WIN;
-			}
-		} else if (mine == SCISSORS) {
-			if (theirs == ROCK){
-				return LOSE;
-			}
-			if (theirs == PAPER) {
-				return WIN;
-			}
-		} else if (mine == ROCK) {
-			if (theirs == PAPER){
-				return LOSE;
-			}
-			if (theirs == SCISSORS){
-				return WIN;
-			}
-		}
-
-	}
-}
-
-symbol_t cSelection(symbol_t my_symbol){
-	int status;
-
-	if (my_symbol == ROCK){
-		status = 0;
-	} else if ( my_symbol == PAPER){
-		status = 1;
-	} else {
-		status = 2;
-	}
+//     buffer[0] = character;
+//     buffer[1] = '\0';
+//     tinygl_text (buffer);
+// }
 
 
-	if (navswitch_push_event_p (NAVSWITCH_WEST))
-			status += 1;
+// char character;
 
-		if (navswitch_push_event_p (NAVSWITCH_EAST)) {
-			if (status == 0) {
-				status = 2;
-			} else {
-				status -= 1;
-			}
-		}
+// result_t result(symbol_t mine, symbol_t theirs) {
+// 	if (mine == theirs) {
+// 		return DRAW;
+// 	} else {
+// 		if (mine == PAPER) {
+// 			if(theirs == SCISSORS){
+// 				return LOSE;
+// 			} 
+// 			if (theirs == ROCK){
+// 				return WIN;
+// 			}
+// 		} else if (mine == SCISSORS) {
+// 			if (theirs == ROCK){
+// 				return LOSE;
+// 			}
+// 			if (theirs == PAPER) {
+// 				return WIN;
+// 			}
+// 		} else if (mine == ROCK) {
+// 			if (theirs == PAPER){
+// 				return LOSE;
+// 			}
+// 			if (theirs == SCISSORS){
+// 				return WIN;
+// 			}
+// 		}
+// 		return 0;
+// 	}
+// }
 
-	status = status % 3;
-		if (status == 0) {
-			my_symbol = ROCK;
-		}
-		if (status == 1) {
-			my_symbol = PAPER;
-		}
-		if (status == 2) {
-			my_symbol = SCISSORS;
-		}
-	return my_symbol;
-}
+// symbol_t cSelection(symbol_t my_symbol){
+// 	int status = 0;
 
-void state_update(void){
-	navswitch_update();
-	if(navswitch_push_event_p(NAVSWITCH_PUSH)){
-		ready = 1;                                                                                                                                                                                                                                                                                
-		//my_symbol = cSelection(my_symbol)
-
-	}
-}
+// 	if (my_symbol == ROCK){
+// 		status = 0;
+// 	} else if (my_symbol == PAPER){
+// 		status = 1;
+// 	} else if(my_symbol == SCISSORS){
+// 		status = 2;
+// 	}
 
 
-int main (void)
-{
+// 	if (navswitch_push_event_p (NAVSWITCH_WEST))
+// 			status += 1;
+
+// 		if (navswitch_push_event_p (NAVSWITCH_EAST)) {
+// 			if (status == 0) {
+// 				status = 2;
+// 			} else {
+// 				status -= 1;
+// 			}
+// 		}
+
+// 	status = status % 3;
+// 		if (status == 0) {
+// 			my_symbol = ROCK;
+// 		}
+// 		if (status == 1) {
+// 			my_symbol = PAPER;
+// 		}
+// 		if (status == 2) {
+// 			my_symbol = SCISSORS;
+// 		}
+// 	return my_symbol;
+// }
+
+// void state_update(void){
+// 	navswitch_update();
+// 	if(navswitch_push_event_p(NAVSWITCH_PUSH)){
+// 		ready = 1;                                                                                                                                                                                                                                                                                
+// 		my_symbol = cSelection(my_symbol)
+
+// 	}
+// }
+
+
+int main(void) {
+
+
 	/* Initialize everything*/
 	system_init ();
     //char character;
@@ -152,6 +150,19 @@ int main (void)
     ir_uart_init();
     pacer_init (PACER_RATE);
 
+	int sent = 0;
+	int received = 0;
+	int ready = 0;
+	int text_set = 0;
+
+	symbol_t received_symbol;
+	symbol_t my_symbol = ROCK;
+	symbol_t their_symbol;
+
+
+
+	char character;
+    
     while(1)
     {
     	//pacer_wait ();
@@ -185,16 +196,16 @@ int main (void)
 				if (received_symbol == PAPER ||
 					received_symbol == ROCK  ||
 					received_symbol == SCISSORS){
-					their_symbol = ir_uart_getc();
+					their_symbol = received_symbol;
 					received = 1;
 				} 
 			}
 		}
 		
-		// if(sent && !received){
-		// 	//display_character(WAIT);
-		// 	tinygl_text("w");
-		// }
+		if(sent && !received){
+			//display_character(WAIT);
+			tinygl_text("w");
+		}
 
 		if (sent == 1 && received == 1){
 			//ir_uart_putc(my_symbol);
