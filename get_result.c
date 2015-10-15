@@ -2,8 +2,7 @@
   Written by Jinyoung Park 15648768
   Rock_Scissor_Paper
   ---------------------------------- 
-  File: game.c
-  definition of type of symbols (rock, scissors, papers)
+  File: get_result.c
 */
 
 #include "get_result.h"
@@ -14,6 +13,7 @@
 #include "pacer.h"
 #include "tinygl.h"
 
+//returns final result WIN, LOSE, DRAW
 result_t result(symbol_t mine, symbol_t theirs) {
 	if (mine == theirs) {
 		return DRAW;

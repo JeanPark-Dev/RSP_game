@@ -2,8 +2,7 @@
   Written by Jinyoung Park 15648768
   Rock_Scissor_Paper
   ---------------------------------- 
-  File: game.c
-  definition of type of symbols (rock, scissors, papers)
+  File: selection.h
 */
 
 #ifndef SELECTION_H

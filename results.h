@@ -2,14 +2,13 @@
   Written by Jinyoung Park 15648768
   Rock_Scissor_Paper
   ---------------------------------- 
-  File: game.c
-  definition of type of results (win,lose,draw)
+  File: results.h
 */
 
 
 #ifndef RESULTS_H
 #define RESULTS_H
-
+//definition of type of results (win,lose,draw)
 typedef enum {
 	WIN,
 	LOSE,

@@ -1,9 +1,8 @@
 /*ENCE260 Assignment Part II
   Written by Jinyoung Park 15648768
   Rock_Scissor_Paper
-  ---------------------------------- 
-  File: game.c
-  definition of type of symbols (rock, scissors, papers)
+  ----------------------------------
+  File: display_game.c
 */
 
 #include "system.h"
@@ -14,7 +13,8 @@
 #include "display_game.h"
 #include "symbols.h"
 
-void display_character (symbol_t character)
+//display the given character
+void cDisplay (symbol_t character)
 {
     char buffer[2];
 
