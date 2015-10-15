@@ -4,7 +4,7 @@
   ----------------------------------
   File: display_game.c
   character displayer
-  The base of is from lab3-ex4
+  (The base of this function is from lab3-ex4)
 */
 
 #include "system.h"
