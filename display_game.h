@@ -12,6 +12,6 @@
 #include "system.h"
 #include "symbols.h"
 
-void cDisplay (symbol_t character);
+void cDisplay (symbolType character);
 
 #endif
