@@ -14,7 +14,7 @@
 
 
 //change the current symbol status of player and select
-symbol_t cSelection(symbol_t my_symbol)
+symbolType cSelection(symbolType my_symbol)
 {
 	int status = 0;
 

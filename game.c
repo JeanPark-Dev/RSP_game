@@ -19,6 +19,7 @@
 #include "display_game.h"
 #include "selection.h"
 #include "get_result.h"
+#include "display_result.h"
 
 #define PACER_RATE 500  //hertz
 #define MESSAGE_RATE 10 //speed of message flowing
@@ -48,9 +49,9 @@ int main(void)
 
 	//current symbols(status)
 						//sym = symbol
-	symbol_t symReceived;
-	symbol_t mySym = ROCK;
-	symbol_t thSym;
+	symbolType symReceived;
+	symbolType mySym = ROCK;
+	symbolType thSym = ROCK;
 
     while(1)
     {
@@ -98,30 +99,8 @@ int main(void)
 
 		if (sent == 1 && received == 1)
 		{
-			//display the final status
-			if(result(mySym, thSym) == WIN)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("WINNER");
-					text_set = 1;
-				}
-			} else if (result(mySym, thSym) == LOSE)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("LOSSER");
-					text_set = 1;
-				}
-			} else if (result(mySym, thSym) == DRAW)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("DRAW");
-					text_set = 1;
-				}
-			}
-
+			display_result(text_set, mySym, thSym);
+			
 			//Restart the game by pushing the navswitch button
 			if (navswitch_push_event_p(NAVSWITCH_PUSH))
 			{
@@ -136,3 +115,4 @@ int main(void)
 	}
     return 0;
 }
+

@@ -11,6 +11,6 @@
 #include "symbols.h"
 #include "results.h"
 
-result_t result(symbol_t mine, symbol_t theirs);
+resultType result(symbolType mine, symbolType theirs);
 
 #endif

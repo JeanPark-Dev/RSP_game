@@ -10,6 +10,6 @@
 
 #include "symbols.h"
 
-symbol_t cSelection(symbol_t my_symbol);
+symbolType cSelection(symbolType my_symbol);
 
 #endif
