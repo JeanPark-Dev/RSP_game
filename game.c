@@ -51,18 +51,14 @@ int main(void)
 						//sym = symbol
 	symbolType symReceived;
 	symbolType mySym = ROCK;
-<<<<<<< HEAD
 	symbolType thSym = ROCK;
-=======
-	symbolType thSym;
->>>>>>> 4226c591c4568aa795d8315876156f4d5c847a37
 
     while(1)
     {
 		tinygl_update ();
 		navswitch_update ();
 
-		if (ready == 0)
+		if (!ready)
 		{
 			pacer_wait();
 			mySym = cSelection(mySym);
@@ -73,7 +69,7 @@ int main(void)
 				tinygl_clear();
 				ready = 1;
 			}
-		} else if (ready == 1) {
+		} else if (ready) {
 			ir_uart_putc(mySym);
 			sent = 1;
 		}
@@ -96,43 +92,15 @@ int main(void)
 		}
 
 		//display 'w' while wating
-		if(sent == 1 && received == 0)
+		if(sent && !received)
 		{
 			tinygl_text("w");
 		}
 
 		if (sent == 1 && received == 1)
 		{
-<<<<<<< HEAD
 			display_result(text_set, mySym, thSym);
 			
-=======
-			resultType outcome = result(mySym, thSym);
-			//display the final status
-			if (outcome == DRAW)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("DRAW");
-					text_set = 1;
-				}
-			}  else if (outcome == LOSE)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("LOSER");
-					text_set = 1;
-				}
-			} else if(outcome == WIN)
-			{
-				if(text_set == 0)
-				{
-					tinygl_text("WINNER");
-					text_set = 1;
-				}
-			}
-
->>>>>>> 4226c591c4568aa795d8315876156f4d5c847a37
 			//Restart the game by pushing the navswitch button
 			if (navswitch_push_event_p(NAVSWITCH_PUSH))
 			{
@@ -146,9 +114,5 @@ int main(void)
 		tinygl_update();
 	}
     return 0;
-<<<<<<< HEAD
 }
 
-=======
-}
->>>>>>> 4226c591c4568aa795d8315876156f4d5c847a37
