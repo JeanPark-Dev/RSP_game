@@ -1,7 +1,7 @@
 /*ENCE260 Assignment Part II
   Written by Jinyoung Park 15648768
   Rock_Scissor_Paper
-  ---------------------------------- 
+  ----------------------------------
   File: get_result.h
 */
 
